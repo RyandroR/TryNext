@@ -1,34 +1,34 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import ArticleList from '../components/ArticleList'
 import React, { useState } from "react";
+import styles from '../styles/Article.module.css'
+import Link from 'next/link'
 
-const [data, setData] = useState();
+export default function Home() {
+  const [data, setData] = useState();
 
-fetch('https://jsonplaceholder.typicode.com/posts')
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  fetch('https://jsonplaceholder.typicode.com/posts?_limit=6')
+    .then((res) => res.json())
+    .then((data) => {
+      setData(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
-
-
-export default function Home({ data }) {
   console.log(data)
   return (
-    <div >
-      
-      <div>
-        Welcome to next
-      </div>
-      {data?.map((data)=>(
-      <div  key={article.id}>
-        <h3>{article.title}</h3> 
-      </div>
-    ))}
+    <div className={styles.grid}>
+      {data?.map((data) => (
+        <div key={data.id}>
+        <Link href={`/data/${data.id}`}>
+          <a>
+            <h3>{data.title} &rarr;</h3>
+          <p>{data.body}</p>
+          </a>
+        </Link>
+        </div>
+      ))}
     </div>
   )
 }
